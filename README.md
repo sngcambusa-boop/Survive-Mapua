@@ -1,4 +1,4 @@
-# Mapua Sim: The Quadsem Survival Game ☕
+# Mapua Sim: The Quadsem Survival Game 
 
 Mapua Sim is a turn-based resource-management and survival game developed in Java. The game simulates the fast-paced, high-pressure environment of Mapua University's 10-week Quarter-Semester (quadsem) system. Players must balance their academic responsibilities, mental health, and physical well-being through random, database-driven weekly events.
 
