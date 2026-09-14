@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 public class TestConnection {
     
-    // MAMP Default Credentials
     private static final String URL = "jdbc:mysql://localhost:8889/mapua_sim_db";
     private static final String USER = "root";
     private static final String PASSWORD = "root"; 
