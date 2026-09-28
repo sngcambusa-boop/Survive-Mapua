@@ -31,7 +31,8 @@ To win (pass the semester), players must survive 10 turns (weeks) by keeping thr
 7. Run the `Main.java` file to start the game.
 
 ## Developers
-*   Sebastian Nicolas Cambusa
-*   [Groupmate Name/Role]
-*   [Groupmate Name/Role]
-*   [Groupmate Name/Role]
+*   SEBASTIAN NICOLAS CAMBUSA
+*   JULIAN ANDRE MARILLA
+*   TEDDY BALAORO
+*   REYHAN TIMOTHY SO
+
