@@ -20,6 +20,45 @@ public class DBConnection {
         return fetchEvent(query, id);
     }
 
+    public static void saveGame(Player p) {
+        String query = "REPLACE INTO player_saves (id, week, turn_in_week, money, stress, sleep_debt, assignments, academic_points) VALUES (1, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, p.week);
+            pstmt.setInt(2, p.turnInWeek);
+            pstmt.setInt(3, p.money);
+            pstmt.setInt(4, p.stress);
+            pstmt.setInt(5, p.sleepDebt);
+            pstmt.setInt(6, p.assignments);
+            pstmt.setInt(7, p.academicPoints);
+            pstmt.executeUpdate();
+            System.out.println("Game saved successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Player loadGame() {
+        String query = "SELECT * FROM player_saves WHERE id = 1";
+
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                Player p = new Player();
+                p.week = rs.getInt("week");
+                p.turnInWeek = rs.getInt("turn_in_week");
+                p.money = rs.getInt("money");
+                p.stress = rs.getInt("stress");
+                p.sleepDebt = rs.getInt("sleep_debt");
+                p.assignments = rs.getInt("assignments");
+                p.academicPoints = rs.getInt("academic_points");
+                return p;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private static GameEvent fetchEvent(String query, int parameter) {
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, parameter);

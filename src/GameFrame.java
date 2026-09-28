@@ -21,18 +21,18 @@ public class GameFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(12, 12));
         setLocationRelativeTo(null);
-        getContentPane().setBackground(new Color(242, 244, 246));
+        getContentPane().setBackground(new Color(138, 21, 56));
 
         player = new Player();
 
         // 2. Top Panel (Status & Turn)
         JPanel northPanel = new JPanel(new BorderLayout(15, 0));
-        northPanel.setBackground(new Color(17, 44, 78));
-        northPanel.setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
+        northPanel.setBackground(new Color(138, 21, 56));
+        northPanel.setBorder(BorderFactory.createEmptyBorder(16, 20, 16, 20));
 
-        JLabel titleLabel = new JLabel("MAPUA SIM");
-        titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        JLabel titleLabel = new JLabel("MAPÚA SIM");
+        titleLabel.setForeground(new Color(255, 204, 0));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         northPanel.add(titleLabel, BorderLayout.WEST);
 
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 0));
@@ -43,11 +43,11 @@ public class GameFrame extends JFrame {
         lblTurn.setFont(new Font("Arial", Font.BOLD, 15));
 
         lblMoney = new JLabel("💰 Baon: ₱" + player.money);
-        lblMoney.setForeground(new Color(255, 214, 102));
+        lblMoney.setForeground(new Color(255, 220, 110));
         lblMoney.setFont(new Font("Arial", Font.BOLD, 15));
 
         lblGrades = new JLabel("🎓 Academic Points: " + player.academicPoints);
-        lblGrades.setForeground(new Color(179, 235, 255));
+        lblGrades.setForeground(Color.WHITE);
         lblGrades.setFont(new Font("Arial", Font.BOLD, 15));
 
         statusPanel.add(lblTurn);
@@ -59,9 +59,9 @@ public class GameFrame extends JFrame {
         // 3. Left Panel (Hazard Stats)
         JPanel westPanel = new JPanel();
         westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
-        westPanel.setBackground(new Color(248, 250, 252));
+        westPanel.setBackground(Color.WHITE);
         westPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(204, 214, 224), 1),
+            BorderFactory.createLineBorder(new Color(255, 204, 0), 2),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
         westPanel.setPreferredSize(new Dimension(240, 0));
@@ -69,7 +69,7 @@ public class GameFrame extends JFrame {
         JLabel hazardTitle = new JLabel("Hazard Stats");
         hazardTitle.setFont(new Font("Arial", Font.BOLD, 16));
         hazardTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        hazardTitle.setForeground(new Color(17, 44, 78));
+        hazardTitle.setForeground(new Color(138, 21, 56));
         westPanel.add(hazardTitle);
         westPanel.add(Box.createVerticalStrut(12));
 
@@ -81,9 +81,9 @@ public class GameFrame extends JFrame {
 
         // 4. Center Panel (Narrative Text)
         JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBackground(new Color(255, 255, 255));
+        centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(204, 214, 224), 1),
+            BorderFactory.createLineBorder(new Color(255, 204, 0), 2),
                 BorderFactory.createEmptyBorder(18, 18, 18, 18)
         ));
 
@@ -101,14 +101,14 @@ public class GameFrame extends JFrame {
 
         // 5. Bottom Panel (Choices)
         JPanel southPanel = new JPanel(new GridLayout(1, 2, 12, 0));
-        southPanel.setBackground(new Color(242, 244, 246));
+        southPanel.setBackground(new Color(138, 21, 56));
         southPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 
         btnChoiceA = new JButton("Choice A");
         btnChoiceB = new JButton("Choice B");
 
-        styleButton(btnChoiceA, new Color(34, 139, 230));
-        styleButton(btnChoiceB, new Color(39, 174, 96));
+        styleButton(btnChoiceA);
+        styleButton(btnChoiceB);
 
         btnChoiceA.addActionListener(e -> resolveChoice(true));
         btnChoiceB.addActionListener(e -> resolveChoice(false));
@@ -132,9 +132,9 @@ public class GameFrame extends JFrame {
         JProgressBar bar = new JProgressBar(0, maxValue);
         bar.setStringPainted(true);
         bar.setFont(new Font("Arial", Font.BOLD, 11));
-        bar.setBackground(new Color(224, 228, 232));
-        bar.setForeground(isPrimary ? new Color(231, 76, 60) : new Color(241, 196, 15));
-        bar.setBorder(BorderFactory.createEmptyBorder());
+        bar.setBackground(new Color(239, 232, 233));
+        bar.setForeground(isPrimary ? new Color(138, 21, 56) : new Color(218, 166, 0));
+        bar.setBorder(BorderFactory.createLineBorder(new Color(216, 203, 205)));
         bar.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         if (labelText.startsWith("Assignments")) {
@@ -149,13 +149,13 @@ public class GameFrame extends JFrame {
         panel.add(Box.createVerticalStrut(12));
     }
 
-    private void styleButton(JButton btn, Color color) {
+    private void styleButton(JButton btn) {
         btn.setFocusPainted(false);
-        btn.setFont(new Font("Arial", Font.BOLD, 15));
-        btn.setForeground(Color.WHITE);
-        btn.setBackground(color);
+        btn.setFont(new Font("Arial", Font.BOLD, 17));
+        btn.setForeground(new Color(138, 21, 56));
+        btn.setBackground(Color.WHITE);
         btn.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(color.darker(), 2),
+                BorderFactory.createLineBorder(new Color(255, 204, 0), 2),
                 BorderFactory.createEmptyBorder(12, 18, 12, 18)
         ));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
