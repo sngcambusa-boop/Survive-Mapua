@@ -16,77 +16,151 @@ public class GameFrame extends JFrame {
     public GameFrame() {
         // 1. Setup Main Window
         setTitle("Mapua Sim: The Quadsem Survival Game");
-        setSize(800, 500);
+        setSize(900, 560);
+        setMinimumSize(new Dimension(850, 500));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(10, 10));
-        setLocationRelativeTo(null); 
+        setLayout(new BorderLayout(12, 12));
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(new Color(242, 244, 246));
 
         player = new Player();
 
         // 2. Top Panel (Status & Turn)
-        JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
+        JPanel northPanel = new JPanel(new BorderLayout(15, 0));
+        northPanel.setBackground(new Color(17, 44, 78));
+        northPanel.setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
+
+        JLabel titleLabel = new JLabel("MAPUA SIM");
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        northPanel.add(titleLabel, BorderLayout.WEST);
+
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 0));
+        statusPanel.setOpaque(false);
+
         lblTurn = new JLabel("Week: 1 / 10");
-        lblTurn.setFont(new Font("Arial", Font.BOLD, 16));
+        lblTurn.setForeground(Color.WHITE);
+        lblTurn.setFont(new Font("Arial", Font.BOLD, 15));
+
         lblMoney = new JLabel("💰 Baon: ₱" + player.money);
+        lblMoney.setForeground(new Color(255, 214, 102));
+        lblMoney.setFont(new Font("Arial", Font.BOLD, 15));
+
         lblGrades = new JLabel("🎓 Academic Points: " + player.academicPoints);
-        
-        northPanel.add(lblTurn);
-        northPanel.add(lblMoney);
-        northPanel.add(lblGrades);
+        lblGrades.setForeground(new Color(179, 235, 255));
+        lblGrades.setFont(new Font("Arial", Font.BOLD, 15));
+
+        statusPanel.add(lblTurn);
+        statusPanel.add(lblMoney);
+        statusPanel.add(lblGrades);
+        northPanel.add(statusPanel, BorderLayout.EAST);
         add(northPanel, BorderLayout.NORTH);
 
         // 3. Left Panel (Hazard Stats)
-        JPanel westPanel = new JPanel(new GridLayout(6, 1, 5, 5));
-        westPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        
-        westPanel.add(new JLabel("Assignments (Max 15):"));
-        barAssignments = new JProgressBar(0, 15);
-        barAssignments.setStringPainted(true);
-        westPanel.add(barAssignments);
+        JPanel westPanel = new JPanel();
+        westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
+        westPanel.setBackground(new Color(248, 250, 252));
+        westPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(204, 214, 224), 1),
+                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
+        westPanel.setPreferredSize(new Dimension(240, 0));
 
-        westPanel.add(new JLabel("Sleep Debt (Max 30):"));
-        barSleep = new JProgressBar(0, 30);
-        barSleep.setStringPainted(true);
-        westPanel.add(barSleep);
+        JLabel hazardTitle = new JLabel("Hazard Stats");
+        hazardTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        hazardTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        hazardTitle.setForeground(new Color(17, 44, 78));
+        westPanel.add(hazardTitle);
+        westPanel.add(Box.createVerticalStrut(12));
 
-        westPanel.add(new JLabel("Stress (Max 20):"));
-        barStress = new JProgressBar(0, 20);
-        barStress.setStringPainted(true);
-        westPanel.add(barStress);
-        
+        addStatPanel(westPanel, "Assignments (Max 15)", 15, true);
+        addStatPanel(westPanel, "Sleep Debt (Max 30)", 30, false);
+        addStatPanel(westPanel, "Stress (Max 20)", 20, true);
+
         add(westPanel, BorderLayout.WEST);
 
         // 4. Center Panel (Narrative Text)
         JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
+        centerPanel.setBackground(new Color(255, 255, 255));
+        centerPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(204, 214, 224), 1),
+                BorderFactory.createEmptyBorder(18, 18, 18, 18)
+        ));
+
         txtEventDescription = new JTextArea("Loading event...");
         txtEventDescription.setFont(new Font("Arial", Font.PLAIN, 16));
         txtEventDescription.setLineWrap(true);
         txtEventDescription.setWrapStyleWord(true);
         txtEventDescription.setEditable(false);
-        txtEventDescription.setBackground(new Color(240, 240, 240)); 
-        
+        txtEventDescription.setBackground(new Color(255, 255, 255));
+        txtEventDescription.setForeground(new Color(33, 33, 33));
+        txtEventDescription.setMargin(new Insets(8, 8, 8, 8));
+
         centerPanel.add(txtEventDescription, BorderLayout.CENTER);
         add(centerPanel, BorderLayout.CENTER);
 
         // 5. Bottom Panel (Choices)
-        JPanel southPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        southPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
-        
+        JPanel southPanel = new JPanel(new GridLayout(1, 2, 12, 0));
+        southPanel.setBackground(new Color(242, 244, 246));
+        southPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
+
         btnChoiceA = new JButton("Choice A");
         btnChoiceB = new JButton("Choice B");
-        
-        // Button Listeners
+
+        styleButton(btnChoiceA, new Color(34, 139, 230));
+        styleButton(btnChoiceB, new Color(39, 174, 96));
+
         btnChoiceA.addActionListener(e -> resolveChoice(true));
         btnChoiceB.addActionListener(e -> resolveChoice(false));
-        
+
         southPanel.add(btnChoiceA);
         southPanel.add(btnChoiceB);
         add(southPanel, BorderLayout.SOUTH);
 
         // 6. Start the Game!
         nextTurn();
+    }
+
+    private void addStatPanel(JPanel panel, String labelText, int maxValue, boolean isPrimary) {
+        JLabel label = new JLabel(labelText);
+        label.setFont(new Font("Arial", Font.PLAIN, 13));
+        label.setForeground(new Color(44, 62, 80));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(label);
+        panel.add(Box.createVerticalStrut(4));
+
+        JProgressBar bar = new JProgressBar(0, maxValue);
+        bar.setStringPainted(true);
+        bar.setFont(new Font("Arial", Font.BOLD, 11));
+        bar.setBackground(new Color(224, 228, 232));
+        bar.setForeground(isPrimary ? new Color(231, 76, 60) : new Color(241, 196, 15));
+        bar.setBorder(BorderFactory.createEmptyBorder());
+        bar.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        if (labelText.startsWith("Assignments")) {
+            barAssignments = bar;
+        } else if (labelText.startsWith("Sleep")) {
+            barSleep = bar;
+        } else {
+            barStress = bar;
+        }
+
+        panel.add(bar);
+        panel.add(Box.createVerticalStrut(12));
+    }
+
+    private void styleButton(JButton btn, Color color) {
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Arial", Font.BOLD, 15));
+        btn.setForeground(Color.WHITE);
+        btn.setBackground(color);
+        btn.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(color.darker(), 2),
+                BorderFactory.createEmptyBorder(12, 18, 12, 18)
+        ));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setOpaque(true);
+        btn.setContentAreaFilled(true);
     }
 
     // --- GAME LOGIC ---
@@ -100,20 +174,26 @@ public class GameFrame extends JFrame {
             return;
         }
 
-        // Check win state
-        if (player.turn > 10) {
+        // Check win state (survived past week 10)
+        if (player.week > 10) {
             triggerEnding();
             return;
-        } 
-        
-        // Fetch event from database
-        if (player.turn == 10) {
-            currentEvent = DBConnection.getEventById(999); // Hell Week
-        } else {
+        }
+
+        // --- NEW EVENT SCHEDULER ---
+        if (player.week == 10 && player.turnInWeek == 3) {
+            // Very last turn of the game: Hell Week Finals
+            currentEvent = DBConnection.getEventById(999);
+        }
+        else if ((player.week == 4 || player.week == 8) && player.turnInWeek == 3) {
+            // Week 4 and Week 8, Turn 3: Summative Exams!
+            currentEvent = DBConnection.getEventById(904); // ID 904 will be your Exam Event
+        }
+        else {
+            // Standard turns: Random Event
             currentEvent = DBConnection.getRandomEvent(player.stress);
         }
 
-        // Failsafe
         if (currentEvent == null) {
             txtEventDescription.setText("DATABASE ERROR: Could not load event.");
             btnChoiceA.setEnabled(false);
@@ -121,12 +201,17 @@ public class GameFrame extends JFrame {
             return;
         }
 
-        // Update Screen
-        lblTurn.setText("Week: " + player.turn + " / 10");
+        lblTurn.setText("Week: " + player.week + " / 10 (Turn: " + player.turnInWeek + "/3)");
         txtEventDescription.setText("EVENT: " + currentEvent.name + "\n\n" + currentEvent.description);
-        
+
         setupButton(btnChoiceA, currentEvent.choiceAText, currentEvent.costA);
-        setupButton(btnChoiceB, currentEvent.choiceBText, currentEvent.costB);
+
+        if (currentEvent.choiceBText == null || currentEvent.choiceBText.trim().isEmpty() || currentEvent.choiceBText.equalsIgnoreCase("none")) {
+            btnChoiceB.setVisible(false); // Hide the second button
+        } else {
+            btnChoiceB.setVisible(true);  // Show it for normal events
+            setupButton(btnChoiceB, currentEvent.choiceBText, currentEvent.costB);
+        }
     }
 
     private void setupButton(JButton btn, String text, int cost) {
@@ -159,7 +244,13 @@ public class GameFrame extends JFrame {
         if (player.sleepDebt < 0) player.sleepDebt = 0;
         if (player.assignments < 0) player.assignments = 0;
 
-        player.turn++;
+        // NEW TIME LOGIC: 3 Turns per week
+        player.turnInWeek++;
+        if (player.turnInWeek > 3) {
+            player.turnInWeek = 1;
+            player.week++;
+        }
+
         nextTurn();
     }
 

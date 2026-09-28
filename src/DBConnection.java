@@ -10,7 +10,8 @@ public class DBConnection {
     }
 
     public static GameEvent getRandomEvent(int currentStress) {
-        String query = "SELECT * FROM events_pool WHERE req_stress_limit >= ? AND event_id != 999 ORDER BY RAND() LIMIT 1";
+        // Exclude 999 (Hell Week) and 904 (Summative Exam) from the random pool
+        String query = "SELECT * FROM events_pool WHERE req_stress_limit >= ? AND event_id NOT IN (999, 904) ORDER BY RAND() LIMIT 1";
         return fetchEvent(query, currentStress);
     }
 
