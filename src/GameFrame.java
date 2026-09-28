@@ -255,8 +255,8 @@ public class GameFrame extends JFrame {
     }
 
     private void updateUIStats() {
-        lblMoney.setText("💰 Baon: ₱" + player.money);
-        lblGrades.setText("🎓 Academic Points: " + player.academicPoints);
+        lblMoney.setText(" Baon: ₱" + player.money);
+        lblGrades.setText(" Academic Points: " + player.academicPoints);
         
         barAssignments.setValue(player.assignments);
         barSleep.setValue(player.sleepDebt);
