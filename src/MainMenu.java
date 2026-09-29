@@ -44,8 +44,17 @@ public class MainMenu extends JFrame {
         });
 
         btnLoadGame.addActionListener(e -> {
-            // Placeholder until we wire up the DB saves
-            JOptionPane.showMessageDialog(this, "Save/Load system coming soon!");
+            Player savedPlayer = DBConnection.loadGame();
+            if (savedPlayer == null) {
+                JOptionPane.showMessageDialog(this,
+                        "No saved game was found, or the database is unavailable.",
+                        "Unable to Load Game",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            new GameFrame(savedPlayer).setVisible(true);
+            this.dispose();
         });
 
         btnExit.addActionListener(e -> System.exit(0)); // Kills the Java program

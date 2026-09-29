@@ -9,18 +9,40 @@ public class DBConnection {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    public static GameEvent getRandomEvent(int currentStress) {
-        // Exclude 999 (Hell Week) and 904 (Summative Exam) from the random pool
-        String query = "SELECT * FROM events_pool WHERE req_stress_limit >= ? AND event_id NOT IN (999, 904) ORDER BY RAND() LIMIT 1";
-        return fetchEvent(query, currentStress);
+    // Updated to accept currentWeek
+    public static GameEvent getRandomEvent(int currentStress, int currentWeek) {
+        String query = "SELECT * FROM events_pool WHERE req_stress_limit >= ? AND req_week_min <= ? AND req_week_max >= ? AND event_id NOT IN (999, 904) ORDER BY RAND() LIMIT 1";
+
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, currentStress);
+            pstmt.setInt(2, currentWeek);
+            pstmt.setInt(3, currentWeek);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return parseEventFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static GameEvent getEventById(int id) {
         String query = "SELECT * FROM events_pool WHERE event_id = ?";
-        return fetchEvent(query, id);
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return parseEventFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public static void saveGame(Player p) {
+    public static boolean saveGame(Player p) {
         String query = "REPLACE INTO player_saves (id, week, turn_in_week, money, stress, sleep_debt, assignments, academic_points) VALUES (1, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -33,8 +55,10 @@ public class DBConnection {
             pstmt.setInt(7, p.academicPoints);
             pstmt.executeUpdate();
             System.out.println("Game saved successfully.");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -59,36 +83,27 @@ public class DBConnection {
         return null;
     }
 
-    private static GameEvent fetchEvent(String query, int parameter) {
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, parameter);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                GameEvent event = new GameEvent();
-                event.id = rs.getInt("event_id");
-                event.name = rs.getString("event_name");
-                event.description = rs.getString("event_description");
-                
-                event.choiceAText = rs.getString("choice_A_text");
-                event.costA = rs.getInt("choice_A_money_cost");
-                event.stressA = rs.getInt("choice_A_stress_mod");
-                event.sleepA = rs.getInt("choice_A_sleep_mod");
-                event.assignA = rs.getInt("choice_A_assign_mod");
-                event.gradeA = rs.getInt("choice_A_grade_mod");
-                event.moneyA = rs.getInt("choice_A_money_mod");
-                
-                event.choiceBText = rs.getString("choice_B_text");
-                event.costB = rs.getInt("choice_B_money_cost");
-                event.stressB = rs.getInt("choice_B_stress_mod");
-                event.sleepB = rs.getInt("choice_B_sleep_mod");
-                event.assignB = rs.getInt("choice_B_assign_mod");
-                event.gradeB = rs.getInt("choice_B_grade_mod");
-                event.moneyB = rs.getInt("choice_B_money_mod");
-                return event;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private static GameEvent parseEventFromResultSet(ResultSet rs) throws SQLException {
+        GameEvent event = new GameEvent();
+        event.id = rs.getInt("event_id");
+        event.name = rs.getString("event_name");
+        event.description = rs.getString("event_description");
+
+        event.choiceAText = rs.getString("choice_A_text");
+        event.costA = rs.getInt("choice_A_money_cost");
+        event.stressA = rs.getInt("choice_A_stress_mod");
+        event.sleepA = rs.getInt("choice_A_sleep_mod");
+        event.assignA = rs.getInt("choice_A_assign_mod");
+        event.gradeA = rs.getInt("choice_A_grade_mod");
+        event.moneyA = rs.getInt("choice_A_money_mod");
+
+        event.choiceBText = rs.getString("choice_B_text");
+        event.costB = rs.getInt("choice_B_money_cost");
+        event.stressB = rs.getInt("choice_B_stress_mod");
+        event.sleepB = rs.getInt("choice_B_sleep_mod");
+        event.assignB = rs.getInt("choice_B_assign_mod");
+        event.gradeB = rs.getInt("choice_B_grade_mod");
+        event.moneyB = rs.getInt("choice_B_money_mod");
+        return event;
     }
 }

@@ -14,6 +14,10 @@ public class GameFrame extends JFrame {
     private JButton btnChoiceA, btnChoiceB;
 
     public GameFrame() {
+        this(new Player());
+    }
+
+    public GameFrame(Player startingPlayer) {
         // 1. Setup Main Window
         setTitle("Mapua Sim: The Quadsem Survival Game");
         setSize(900, 560);
@@ -23,7 +27,7 @@ public class GameFrame extends JFrame {
         setLocationRelativeTo(null);
         getContentPane().setBackground(new Color(138, 21, 56));
 
-        player = new Player();
+        player = startingPlayer;
 
         // 2. Top Panel (Status & Turn)
         JPanel northPanel = new JPanel(new BorderLayout(15, 0));
@@ -53,6 +57,23 @@ public class GameFrame extends JFrame {
         statusPanel.add(lblTurn);
         statusPanel.add(lblMoney);
         statusPanel.add(lblGrades);
+
+        JButton btnSave = new JButton("Save");
+        btnSave.setFocusPainted(false);
+        btnSave.setForeground(new Color(138, 21, 56));
+        btnSave.setBackground(Color.WHITE);
+        btnSave.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(255, 204, 0), 2),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        btnSave.addActionListener(e -> {
+            if (DBConnection.saveGame(player)) {
+                JOptionPane.showMessageDialog(this, "Game saved successfully.", "Save Game", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Could not save the game. Check the database connection and save table.", "Save Failed", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        statusPanel.add(btnSave);
         northPanel.add(statusPanel, BorderLayout.EAST);
         add(northPanel, BorderLayout.NORTH);
 
@@ -73,9 +94,9 @@ public class GameFrame extends JFrame {
         westPanel.add(hazardTitle);
         westPanel.add(Box.createVerticalStrut(12));
 
-        addStatPanel(westPanel, "Assignments (Max 15)", 15, true);
-        addStatPanel(westPanel, "Sleep Debt (Max 30)", 30, false);
-        addStatPanel(westPanel, "Stress (Max 20)", 20, true);
+        addStatPanel(westPanel, "Assignments (Max " + Player.ASSIGNMENTS_LIMIT + ")", Player.ASSIGNMENTS_LIMIT, true);
+        addStatPanel(westPanel, "Sleep Debt (Max " + Player.SLEEP_DEBT_LIMIT + ")", Player.SLEEP_DEBT_LIMIT, false);
+        addStatPanel(westPanel, "Stress (Max " + Player.STRESS_LIMIT + ")", Player.STRESS_LIMIT, true);
 
         add(westPanel, BorderLayout.WEST);
 
@@ -190,8 +211,8 @@ public class GameFrame extends JFrame {
             currentEvent = DBConnection.getEventById(904); // ID 904 will be your Exam Event
         }
         else {
-            // Standard turns: Random Event
-            currentEvent = DBConnection.getRandomEvent(player.stress);
+            // Standard turns: Random Event filtered by week
+            currentEvent = DBConnection.getRandomEvent(player.stress, player.week);
         }
 
         if (currentEvent == null) {
