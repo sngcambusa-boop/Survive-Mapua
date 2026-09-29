@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Sep 29, 2026 at 01:47 PM
+-- Generation Time: Sep 29, 2026 at 02:55 PM
 -- Server version: 8.0.44
 -- PHP Version: 8.3.30
 
@@ -103,7 +103,8 @@ INSERT INTO `events_pool` (`event_id`, `event_name`, `event_description`, `event
 (801, 'FORCED ALL-NIGHTER', 'Your Java code threw a massive NullPointerException at 2 AM. You have no choice but to stay awake and fix it.', NULL, 0, 'Drink Coffee & Suffer', 0, 5, 10, -2, 2, 0, '', 0, 0, 0, 0, 0, 0, 1, 10),
 (802, 'UNEXPECTED JAM SESSION', 'You found an empty room on campus with a decent piano. You spend an hour just playing \"Let It Be\", completely forgetting about your deadlines. A massive weight lifts off your shoulders.', NULL, 10, 'Take a breath', 0, -10, -5, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 1, 10),
 (904, 'SUMMATIVE EXAM', 'It is exam week! A massive summative test is in front of you. Do you rely on stock knowledge, or pull an all-nighter cramming?', NULL, 0, 'Cram All Night', 0, 5, 8, -2, 10, 0, 'Stock Knowledge', 0, -2, 0, 0, -10, 0, 1, 10),
-(999, 'HELL WEEK', 'It is Week 10. Thesis defense, final machine problems, and 3 exams are all due at the same time. Survive.', 'special', 100, 'Cram EVERYTHING (Drink 3 Coffees).', 350, 15, 20, -15, 10, -350, 'Prioritize sleep and just pass what you have.', 0, -10, -15, 5, -15, 0, 1, 10);
+(999, 'HELL WEEK', 'It is Week 10. Thesis defense, final machine problems, and 3 exams are all due at the same time. Survive.', 'special', 100, 'Cram EVERYTHING (Drink 3 Coffees).', 350, 15, 20, -15, 10, -350, 'Prioritize sleep and just pass what you have.', 0, -10, -15, 5, -15, 0, 1, 10),
+(1100, NULL, 'WEEK 11: DEPARTMENTAL EXAMS! The ultimate boss fight of the quadsem.', NULL, 100, 'Cram all night (Huge Grade boost, max sleep debt)', 0, 15, 20, 0, 25, 0, 'Sleep well and pray (Stress relief, risky grades)', 0, -10, -15, 0, -15, 0, 11, 10);
 
 -- --------------------------------------------------------
 

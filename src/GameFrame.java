@@ -338,13 +338,19 @@ public class GameFrame extends JFrame {
             return;
         }
 
-        // Check win state (survived past week 10)
-        if (player.week > 10) {
+        // Check win state after completing week 11
+        if (player.week > 11) {
+            JOptionPane.showMessageDialog(this,
+                    "Congratulations! You survived the quadsem and passed the Departmental Exams!",
+                    "Semester Complete", JOptionPane.INFORMATION_MESSAGE);
             triggerEnding();
             return;
         }
 
-        if (player.week == 10 && player.turnInWeek == 3) {
+        if (player.week == 11 && player.turnInWeek == 1) {
+            currentEvent = DBConnection.getEventById(1100);
+        }
+        else if (player.week == 10 && player.turnInWeek == 3) {
             // Very last turn of the game: Hell Week Finals
             currentEvent = DBConnection.getEventById(999);
         }
@@ -364,8 +370,12 @@ public class GameFrame extends JFrame {
             return;
         }
 
-        lblTurn.setText("Week: " + player.week + " / 10 (Turn: " + player.turnInWeek + "/3)");
-        lblEventName.setText(currentEvent.name);
+        lblTurn.setText("Week: " + player.week + " / 11 (Turn: " + player.turnInWeek + "/3)");
+        String eventTitle = currentEvent.name;
+        if (eventTitle == null || eventTitle.trim().isEmpty()) {
+            eventTitle = currentEvent.id == 1100 ? "Departmental Exams" : "Campus Event";
+        }
+        lblEventName.setText(eventTitle);
         txtEventDescription.setText(currentEvent.description);
 
         setupButton(btnChoiceA, currentEvent.choiceAText, currentEvent.costA);
@@ -474,7 +484,7 @@ public class GameFrame extends JFrame {
         else finalGrade = "Failed / Singko (5.00)";
 
         lblEventName.setText("Semester Complete");
-        txtEventDescription.setText("You survived the 10-week quadsem.\n\nFinal Evaluation: " + finalGrade);
+        txtEventDescription.setText("You survived the 11-week quadsem.\n\nFinal Evaluation: " + finalGrade);
         btnChoiceB.setVisible(false);
 
         for (java.awt.event.ActionListener al : btnChoiceA.getActionListeners()) {

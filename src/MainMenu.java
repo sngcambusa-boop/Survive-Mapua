@@ -102,7 +102,7 @@ public class MainMenu extends JFrame {
         mainPanel.add(buttonsPanel, BorderLayout.CENTER);
 
         // --- BOTTOM LABEL ---
-        JLabel rhythmLabel = new JLabel("10 WEEKS  |  3 TURNS PER WEEK");
+        JLabel rhythmLabel = new JLabel("11 WEEKS  |  3 TURNS PER WEEK");
         rhythmLabel.setFont(new Font("Arial", Font.BOLD, 11));
         rhythmLabel.setForeground(new Color(255, 224, 174));
         rhythmLabel.setHorizontalAlignment(SwingConstants.CENTER);
