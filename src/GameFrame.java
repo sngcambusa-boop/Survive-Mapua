@@ -265,8 +265,19 @@ public class GameFrame extends JFrame {
 
     private void triggerGameOver(String message) {
         txtEventDescription.setText(message);
-        btnChoiceA.setVisible(false);
         btnChoiceB.setVisible(false);
+
+        for (java.awt.event.ActionListener al : btnChoiceA.getActionListeners()) {
+            btnChoiceA.removeActionListener(al);
+        }
+
+        btnChoiceA.setText("Return to Main Menu");
+        btnChoiceA.setVisible(true);
+        btnChoiceA.setEnabled(true);
+        btnChoiceA.addActionListener(e -> {
+            new MainMenu().setVisible(true);
+            this.dispose();
+        });
     }
 
     private void triggerEnding() {
@@ -277,8 +288,19 @@ public class GameFrame extends JFrame {
         else finalGrade = "Failed / Singko (5.00)";
 
         txtEventDescription.setText("SEMESTER COMPLETE!\n\nYou survived the 10-week quadsem.\nFinal Evaluation: " + finalGrade);
-        btnChoiceA.setVisible(false);
         btnChoiceB.setVisible(false);
+
+        for (java.awt.event.ActionListener al : btnChoiceA.getActionListeners()) {
+            btnChoiceA.removeActionListener(al);
+        }
+
+        btnChoiceA.setText("Return to Main Menu");
+        btnChoiceA.setVisible(true);
+        btnChoiceA.setEnabled(true);
+        btnChoiceA.addActionListener(e -> {
+            new MainMenu().setVisible(true);
+            this.dispose();
+        });
     }
 
     public static void main(String[] args) {
