@@ -3,44 +3,80 @@ import java.awt.*;
 
 public class MainMenu extends JFrame {
 
+    private static final Color CARDINAL_RED = new Color(138, 21, 56);
+    private static final Color MAPUA_GOLD = new Color(255, 204, 0);
+
     public MainMenu() {
-        // 1. Setup Window
         setTitle("Mapua Sim: The Quadsem Survival Game");
-        setSize(600, 500);
+        setSize(680, 560);
+        setMinimumSize(new Dimension(600, 520));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Centers the window
+        setLocationRelativeTo(null);
         
-        // 2. Main Panel setup with Mapúa Colors
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(new Color(138, 21, 56)); // Mapúa Cardinal Red
+        // Ensure AudioPlayer is accessible in your src folder
+        AudioPlayer.playBGM("assets/bgm.wav");
 
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 70))); // Top spacing
+        JPanel mainPanel = new JPanel(new BorderLayout(0, 20));
+        mainPanel.setBackground(CARDINAL_RED);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 20, 0));
 
-        // 3. Title Text
+        // --- TITLE PANEL (GridBagLayout for perfect centering) ---
+        JPanel titlePanel = new JPanel(new GridBagLayout());
+        titlePanel.setOpaque(false);
+        
+        GridBagConstraints gbcTitle = new GridBagConstraints();
+        gbcTitle.gridx = 0;
+        gbcTitle.gridy = GridBagConstraints.RELATIVE;
+        gbcTitle.anchor = GridBagConstraints.CENTER;
+        gbcTitle.insets = new Insets(5, 0, 5, 0); // Default vertical spacing
+
         JLabel titleLabel = new JLabel("MAPÚA SIM");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 56));
-        titleLabel.setForeground(new Color(255, 204, 0)); // Mapúa Gold
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mainPanel.add(titleLabel);
+        titleLabel.setFont(new Font("Georgia", Font.BOLD, 54));
+        titleLabel.setForeground(MAPUA_GOLD);
 
         JLabel subtitleLabel = new JLabel("The Quadsem Survival Game");
-        subtitleLabel.setFont(new Font("Arial", Font.ITALIC, 20));
+        subtitleLabel.setFont(new Font("Georgia", Font.ITALIC, 20));
         subtitleLabel.setForeground(Color.WHITE);
-        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mainPanel.add(subtitleLabel);
 
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 60))); // Spacing before buttons
+        JLabel descriptionLabel = new JLabel("<html><div style='text-align:center; width:400px;'>Survive the 10-week quadsem by balancing your workload, rest, stress, and Baon.</div></html>");
+        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        descriptionLabel.setForeground(new Color(255, 239, 224));
 
-        // 4. Create Buttons
-        JButton btnNewGame = createMenuButton("New Game");
-        JButton btnLoadGame = createMenuButton("Load Game");
-        JButton btnExit = createMenuButton("Drop Out (Exit)");
+        JSeparator goldRule = new JSeparator();
+        goldRule.setForeground(MAPUA_GOLD);
+        goldRule.setBackground(MAPUA_GOLD);
+        // JSeparator requires preferred size in GridBagLayout to avoid collapsing
+        goldRule.setPreferredSize(new Dimension(200, 2));
 
-        // 5. Button Logic
+        titlePanel.add(titleLabel, gbcTitle);
+        titlePanel.add(subtitleLabel, gbcTitle);
+        gbcTitle.insets = new Insets(15, 0, 15, 0); // Wider spacing around description
+        titlePanel.add(descriptionLabel, gbcTitle);
+        gbcTitle.insets = new Insets(5, 0, 15, 0);
+        titlePanel.add(goldRule, gbcTitle);
+
+        mainPanel.add(titlePanel, BorderLayout.NORTH);
+
+        // --- BUTTONS PANEL (GridBagLayout) ---
+        JPanel buttonsPanel = new JPanel(new GridBagLayout());
+        buttonsPanel.setOpaque(false);
+        
+        GridBagConstraints gbcBtn = new GridBagConstraints();
+        gbcBtn.gridx = 0;
+        gbcBtn.gridy = GridBagConstraints.RELATIVE;
+        gbcBtn.insets = new Insets(8, 0, 8, 0); // Spacing between buttons
+        gbcBtn.anchor = GridBagConstraints.CENTER;
+
+        JButton btnNewGame = createMenuButton("New Game", true);
+        JButton btnLoadGame = createMenuButton("Load Game", false);
+        JButton btnExit = createMenuButton("Exit Game", false);
+
+        btnNewGame.setToolTipText("Start a fresh 10-week semester.");
+        btnLoadGame.setToolTipText("Continue your saved semester.");
+
         btnNewGame.addActionListener(e -> {
-            new GameFrame().setVisible(true); // Launch the actual game window
-            this.dispose(); // Close this main menu window
+            new GameFrame().setVisible(true);
+            this.dispose();
         });
 
         btnLoadGame.addActionListener(e -> {
@@ -57,27 +93,53 @@ public class MainMenu extends JFrame {
             this.dispose();
         });
 
-        btnExit.addActionListener(e -> System.exit(0)); // Kills the Java program
+        btnExit.addActionListener(e -> System.exit(0));
 
-        // 6. Add Buttons to Panel
-        mainPanel.add(btnNewGame);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between buttons
-        mainPanel.add(btnLoadGame);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        mainPanel.add(btnExit);
+        buttonsPanel.add(btnNewGame, gbcBtn);
+        buttonsPanel.add(btnLoadGame, gbcBtn);
+        buttonsPanel.add(btnExit, gbcBtn);
+
+        mainPanel.add(buttonsPanel, BorderLayout.CENTER);
+
+        // --- BOTTOM LABEL ---
+        JLabel rhythmLabel = new JLabel("10 WEEKS  |  3 TURNS PER WEEK");
+        rhythmLabel.setFont(new Font("Arial", Font.BOLD, 11));
+        rhythmLabel.setForeground(new Color(255, 224, 174));
+        rhythmLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        mainPanel.add(rhythmLabel, BorderLayout.SOUTH);
 
         add(mainPanel);
+        getRootPane().setDefaultButton(btnNewGame);
     }
 
-    // Helper method to keep buttons uniformly styled
-    private JButton createMenuButton(String text) {
+    private JButton createMenuButton(String text, boolean primary) {
         JButton btn = new JButton(text);
-        btn.setFont(new Font("Arial", Font.BOLD, 18));
-        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btn.setMaximumSize(new Dimension(250, 50));
+        btn.setFont(new Font("Arial", Font.BOLD, 16));
+        btn.setPreferredSize(new Dimension(300, 52));
         btn.setFocusPainted(false);
-        btn.setBackground(Color.WHITE);
-        btn.setForeground(new Color(138, 21, 56)); // Red text on white buttons
+        Color baseBackground = primary ? MAPUA_GOLD : Color.WHITE;
+        Color baseForeground = CARDINAL_RED;
+        btn.setBackground(baseBackground);
+        btn.setForeground(baseForeground);
+        btn.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(MAPUA_GOLD, 2),
+                BorderFactory.createEmptyBorder(10, 18, 10, 18)
+        ));
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btn.setOpaque(true);
+        
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent event) {
+                btn.setBackground(MAPUA_GOLD);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent event) {
+                btn.setBackground(baseBackground);
+            }
+        });
         return btn;
     }
 
