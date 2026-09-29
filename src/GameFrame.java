@@ -344,7 +344,6 @@ public class GameFrame extends JFrame {
             return;
         }
 
-        // --- NEW EVENT SCHEDULER ---
         if (player.week == 10 && player.turnInWeek == 3) {
             // Very last turn of the game: Hell Week Finals
             currentEvent = DBConnection.getEventById(999);
@@ -354,7 +353,6 @@ public class GameFrame extends JFrame {
             currentEvent = DBConnection.getEventById(904); // ID 904 will be your Exam Event
         }
         else {
-            // Standard turns: Random Event filtered by week
             currentEvent = DBConnection.getRandomEvent(player.stress, player.week);
         }
 
