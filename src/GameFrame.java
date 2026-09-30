@@ -347,7 +347,8 @@ public class GameFrame extends JFrame {
             return;
         }
 
-        if (player.week == 11 && player.turnInWeek == 1) {
+        if (player.week == 11) {
+            player.turnInWeek = 3;
             currentEvent = DBConnection.getEventById(1100);
         }
         else if (player.week == 10 && player.turnInWeek == 3) {
@@ -427,6 +428,10 @@ public class GameFrame extends JFrame {
         if (player.turnInWeek > 3) {
             player.turnInWeek = 1;
             player.week++;
+
+            if (player.week == 11) {
+                player.turnInWeek = 3;
+            }
 
             player.money += 500;
             JOptionPane.showMessageDialog(this,
