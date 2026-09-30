@@ -347,8 +347,7 @@ public class GameFrame extends JFrame {
             return;
         }
 
-        if (player.week == 11) {
-            player.turnInWeek = 3;
+        if (player.week == 11 && player.turnInWeek == 4) {
             currentEvent = DBConnection.getEventById(1100);
         }
         else if (player.week == 10 && player.turnInWeek == 3) {
@@ -371,7 +370,11 @@ public class GameFrame extends JFrame {
             return;
         }
 
-        lblTurn.setText("Week: " + player.week + " / 11 (Turn: " + player.turnInWeek + "/3)");
+        if (currentEvent.id == 1100) {
+            lblTurn.setText("Week: 11 / 11 (Departmental Exam)");
+        } else {
+            lblTurn.setText("Week: " + player.week + " / 11 (Turn: " + player.turnInWeek + "/3)");
+        }
         String eventTitle = currentEvent.name;
         if (eventTitle == null || eventTitle.trim().isEmpty()) {
             eventTitle = currentEvent.id == 1100 ? "Departmental Exams" : "Campus Event";
@@ -424,19 +427,22 @@ public class GameFrame extends JFrame {
         if (player.sleepDebt < 0) player.sleepDebt = 0;
         if (player.assignments < 0) player.assignments = 0;
 
-        player.turnInWeek++;
-        if (player.turnInWeek > 3) {
+        if (currentEvent.id == 1100) {
+            player.week = 12;
             player.turnInWeek = 1;
-            player.week++;
+        } else if (player.week == 11 && player.turnInWeek == 3) {
+            player.turnInWeek = 4;
+        } else {
+            player.turnInWeek++;
+            if (player.turnInWeek > 3) {
+                player.turnInWeek = 1;
+                player.week++;
 
-            if (player.week == 11) {
-                player.turnInWeek = 3;
+                player.money += 500;
+                JOptionPane.showMessageDialog(this,
+                        "It's a new week! You received your ₱500 allowance.",
+                        "Payday", JOptionPane.INFORMATION_MESSAGE);
             }
-
-            player.money += 500;
-            JOptionPane.showMessageDialog(this,
-                    "It's a new week! You received your ₱500 allowance.",
-                    "Payday", JOptionPane.INFORMATION_MESSAGE);
         }
 
         nextTurn();
