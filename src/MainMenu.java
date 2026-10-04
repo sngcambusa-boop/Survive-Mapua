@@ -13,14 +13,12 @@ public class MainMenu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        // Ensure AudioPlayer is accessible in your src folder
         AudioPlayer.playBGM("assets/bgm.wav");
 
         JPanel mainPanel = new JPanel(new BorderLayout(0, 20));
         mainPanel.setBackground(CARDINAL_RED);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 20, 0));
 
-        // --- TITLE PANEL (GridBagLayout for perfect centering) ---
         JPanel titlePanel = new JPanel(new GridBagLayout());
         titlePanel.setOpaque(false);
         
@@ -45,26 +43,24 @@ public class MainMenu extends JFrame {
         JSeparator goldRule = new JSeparator();
         goldRule.setForeground(MAPUA_GOLD);
         goldRule.setBackground(MAPUA_GOLD);
-        // JSeparator requires preferred size in GridBagLayout to avoid collapsing
         goldRule.setPreferredSize(new Dimension(200, 2));
 
         titlePanel.add(titleLabel, gbcTitle);
         titlePanel.add(subtitleLabel, gbcTitle);
-        gbcTitle.insets = new Insets(15, 0, 15, 0); // Wider spacing around description
+        gbcTitle.insets = new Insets(15, 0, 15, 0); 
         titlePanel.add(descriptionLabel, gbcTitle);
         gbcTitle.insets = new Insets(5, 0, 15, 0);
         titlePanel.add(goldRule, gbcTitle);
 
         mainPanel.add(titlePanel, BorderLayout.NORTH);
 
-        // --- BUTTONS PANEL (GridBagLayout) ---
         JPanel buttonsPanel = new JPanel(new GridBagLayout());
         buttonsPanel.setOpaque(false);
         
         GridBagConstraints gbcBtn = new GridBagConstraints();
         gbcBtn.gridx = 0;
         gbcBtn.gridy = GridBagConstraints.RELATIVE;
-        gbcBtn.insets = new Insets(8, 0, 8, 0); // Spacing between buttons
+        gbcBtn.insets = new Insets(8, 0, 8, 0); 
         gbcBtn.anchor = GridBagConstraints.CENTER;
 
         JButton btnNewGame = createMenuButton("New Game", true);
@@ -101,7 +97,6 @@ public class MainMenu extends JFrame {
 
         mainPanel.add(buttonsPanel, BorderLayout.CENTER);
 
-        // --- BOTTOM LABEL ---
         JLabel rhythmLabel = new JLabel("11 WEEKS  |  3 TURNS PER WEEK");
         rhythmLabel.setFont(new Font("Arial", Font.BOLD, 11));
         rhythmLabel.setForeground(new Color(255, 224, 174));

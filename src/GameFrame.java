@@ -31,7 +31,6 @@ public class GameFrame extends JFrame {
 
         player = startingPlayer;
 
-        // 2. Top Panel (Status & Turn)
         JPanel northPanel = new JPanel(new BorderLayout(15, 0));
         northPanel.setBackground(new Color(138, 21, 56));
         northPanel.setBorder(BorderFactory.createEmptyBorder(16, 20, 16, 20));
@@ -89,7 +88,6 @@ public class GameFrame extends JFrame {
         northPanel.add(statusPanel, BorderLayout.EAST);
         add(northPanel, BorderLayout.NORTH);
 
-        // 3. Left Panel (Hazard Stats)
         JPanel westPanel = new JPanel();
         westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
         westPanel.setBackground(Color.WHITE);
@@ -327,7 +325,6 @@ public class GameFrame extends JFrame {
         }
     }
 
-    // --- GAME LOGIC ---
 
     private void nextTurn() {
         updateUIStats();

@@ -1,5 +1,6 @@
 import javax.sound.sampled.*;
 import java.io.File;
+import java.io.InputStream;
 
 public class AudioPlayer {
     private static Clip bgmClip;
@@ -10,11 +11,12 @@ public class AudioPlayer {
                 bgmClip.stop();
             }
             
-            File musicPath = new File(filepath);
-            if (musicPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+            AudioInputStream audioInput = openAudioStream(filepath);
+            if (audioInput != null) {
                 bgmClip = AudioSystem.getClip();
-                bgmClip.open(audioInput);
+                try (audioInput) {
+                    bgmClip.open(audioInput);
+                }
                 bgmClip.loop(Clip.LOOP_CONTINUOUSLY); 
                 bgmClip.start();
             } else {
@@ -27,15 +29,32 @@ public class AudioPlayer {
 
     public static void playSFX(String filepath) {
         try {
-            File soundPath = new File(filepath);
-            if (soundPath.exists()) {
-                AudioInputStream audioInput = AudioSystem.getAudioInputStream(soundPath);
+            AudioInputStream audioInput = openAudioStream(filepath);
+            if (audioInput != null) {
                 Clip sfxClip = AudioSystem.getClip();
-                sfxClip.open(audioInput);
+                try (audioInput) {
+                    sfxClip.open(audioInput);
+                }
+                sfxClip.addLineListener(event -> {
+                    if (event.getType() == LineEvent.Type.STOP) {
+                        sfxClip.close();
+                    }
+                });
                 sfxClip.start();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private static AudioInputStream openAudioStream(String filepath) throws Exception {
+        File audioFile = new File(filepath);
+        if (audioFile.isFile()) {
+            return AudioSystem.getAudioInputStream(audioFile);
+        }
+
+        String resourcePath = filepath.startsWith("/") ? filepath : "/" + filepath;
+        InputStream resource = AudioPlayer.class.getResourceAsStream(resourcePath);
+        return resource == null ? null : AudioSystem.getAudioInputStream(resource);
     }
 }

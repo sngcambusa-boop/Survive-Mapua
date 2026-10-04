@@ -10,9 +10,9 @@ public class Player {
     public int sleepDebt = 0;
     public int stress = 0;
     
-    // NERF 1 & 2: Better Starting Stats
-    public int money = 3500;           // Increased from 2000
-    public int academicPoints = 70;    // Increased from 50 (gives a nice buffer before failing)
+    // NERF 1 & 2: Better Starting Stats mb for making the game hard lol
+    public int money = 3500;          //Game so hard I gott make it easier lol
+    public int academicPoints = 60;    
 
     public boolean isFailing() {
         return assignments >= ASSIGNMENTS_LIMIT

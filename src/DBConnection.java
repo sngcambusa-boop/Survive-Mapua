@@ -11,8 +11,9 @@ public class DBConnection {
 
     // Updated to accept currentWeek
     public static GameEvent getRandomEvent(int currentStress, int currentWeek) {
-        String query = "SELECT * FROM events_pool WHERE req_stress_limit >= ? AND req_week_min <= ? AND (req_week_max >= ? OR (? = 11 AND req_week_max = 10)) AND event_id NOT IN (999, 904, 1100) ORDER BY RAND() LIMIT 1";
+        String query = "SELECT * FROM events_pool WHERE (req_stress_limit = 0 OR req_stress_limit >= ?) AND req_week_min <= ? AND (req_week_max >= ? OR (? = 11 AND req_week_max = 10)) AND event_id NOT IN (999, 904, 1100) ORDER BY RAND() LIMIT 1";
 
+        System.out.println("ATTEMPTING TO PULL EVENT FOR WEEK: " + currentWeek);
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, currentStress);
             pstmt.setInt(2, currentWeek);
@@ -23,7 +24,8 @@ public class DBConnection {
             if (rs.next()) {
                 return parseEventFromResultSet(rs);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(null, "DB ERROR: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
