@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 04, 2026 at 06:39 AM
+-- Generation Time: Oct 04, 2026 at 04:34 PM
 -- Server version: 8.0.44
 -- PHP Version: 8.3.30
 
@@ -97,13 +97,13 @@ INSERT INTO `events_pool` (`event_id`, `event_name`, `event_description`, `event
 (39, 'Long Weekend', 'It is a special non-working holiday! You have a 3-day weekend.', 'health', 100, 'Do absolutely nothing. Just sleep.', 0, -20, -30, 5, -5, 0, 'Get ahead on all assignments.', 0, 10, 5, -20, 15, 0, 2, 10),
 (40, 'The Perfect Cram', 'You crammed for 12 hours straight and miraculously understood everything.', 'academic', 100, 'Take the exam with zero sleep.', 0, 5, 20, -10, 15, 0, 'Buy a massive breakfast to survive.', 250, -5, 10, -10, 15, -250, 2, 10),
 (101, 'TBA PROFESSOR', 'You check your schedule and your professor is still listed as TBA. You wait outside the room for 30 minutes, but nobody arrives.', NULL, 0, 'Go Home early', 0, -5, -5, 0, 0, 0, 'Review Syllabus', 0, 2, 0, 0, 5, 0, 1, 2),
-(102, 'SECTION DISSOLVED', 'Due to low enrollment, your section was dissolved. You had to petition for a new schedule, resulting in a horrible 5-hour vacant period.', NULL, 0, 'Tambay at Wall', 50, -5, 0, 0, 0, -50, 'Study in Library', 0, 5, 0, 0, 8, 0, 1, 2),
+(102, 'SECTION DISSOLVED', 'Due to low enrollment, your section was dissolved. You had to petition for a new schedule, resulting in a horrible 5-hour vacant period.', NULL, 0, 'Tambay at Zeus', 50, -5, 0, 0, 0, -50, 'Study in Library', 0, 5, 0, 0, 8, 0, 1, 2),
 (103, 'COURSE ORIENTATION', 'The professor spends the entire 3-hour period reading the syllabus word-for-word. It is incredibly tedious, but at least there are no assignments yet.', NULL, 0, 'Zone Out', 0, -2, -2, 0, 0, 0, 'Take Detailed Notes', 0, 2, 0, 0, 5, 0, 1, 1),
 (104, 'BLACKBOARD CRASH', 'You try to log in to check your initial course requirements, but the Blackboard server is completely down due to heavy first-week traffic.', NULL, 0, 'Panic refresh the page', 0, 5, 0, 0, 0, 0, 'Take a nap instead', 0, -5, -10, 0, 0, 0, 1, 2),
 (801, 'FORCED ALL-NIGHTER', 'Your Java code threw a massive NullPointerException at 2 AM. You have no choice but to stay awake and fix it.', NULL, 0, 'Drink Coffee & Suffer', 0, 5, 10, -2, 2, 0, '', 0, 0, 0, 0, 0, 0, 1, 10),
 (802, 'UNEXPECTED JAM SESSION', 'You found an empty room on campus with a decent piano. You spend an hour just playing \"Let It Be\", completely forgetting about your deadlines. A massive weight lifts off your shoulders.', NULL, 10, 'Take a breath', 0, -10, -5, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 3, 10),
-(904, 'SUMMATIVE EXAM', 'It is exam week! A massive summative test is in front of you. Do you rely on stock knowledge, or pull an all-nighter cramming?', NULL, 0, 'Cram All Night', 0, 5, 8, -2, 10, 0, 'Stock Knowledge', 0, -2, 0, 0, -10, 0, 1, 10),
-(999, 'HELL WEEK', 'It is Week 10. Thesis defense, final machine problems, and 3 exams are all due at the same time. Survive.', 'special', 100, 'Cram EVERYTHING (Drink 3 Coffees).', 350, 15, 20, -15, 10, -350, 'Prioritize sleep and just pass what you have.', 0, -10, -15, 5, -15, 0, 1, 10),
+(904, 'SUMMATIVE EXAM', 'It is exam week! A massive summative test is in front of you. Do you rely on stock knowledge, or pull an all-nighter cramming?', NULL, 0, 'Cram All Night', 0, 5, 8, -2, 10, 0, 'Stock Knowledge', 0, -2, 0, 0, -10, 0, 9, 10),
+(999, 'HELL WEEK', 'It is Week 10. Thesis defense, final machine problems, and 3 exams are all due at the same time. Survive.', 'special', 100, 'Cram EVERYTHING (Drink 3 Coffees).', 350, 15, 20, -15, 10, -350, 'Prioritize sleep and just pass what you have.', 0, -10, -15, 5, -15, 0, 10, 10),
 (1100, NULL, 'WEEK 11: DEPARTMENTAL EXAMS! The ultimate boss fight of the quadsem.', NULL, 100, 'Cram all night (Huge Grade boost, max sleep debt)', 0, 15, 20, 0, 25, 0, 'Sleep well and pray (Stress relief, risky grades)', 0, -10, -15, 0, -15, 0, 11, 10);
 
 -- --------------------------------------------------------
